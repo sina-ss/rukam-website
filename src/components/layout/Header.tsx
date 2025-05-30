@@ -28,7 +28,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6 space-x-reverse">
+          <nav className="hidden md:flex items-center space-x-6 md:gap-6 space-x-reverse">
             {homeTexts.navigation.menu.map((item) => (
               <Link
                 key={item.href}
@@ -41,12 +41,14 @@ const Header = () => {
           </nav>
 
           {/* CTA Button & Theme Toggle */}
-          <div className="hidden md:flex items-center space-x-4 space-x-reverse">
+          <div className="hidden md:flex items-center space-x-4 md:gap-2 space-x-reverse">
             <ModeToggle />
-            <Button variant="outline" size="sm">
-              {homeTexts.navigation.auth.login}
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/login">{homeTexts.navigation.auth.login}</Link>
             </Button>
-            <Button size="sm">{homeTexts.navigation.auth.signup}</Button>
+            <Button size="sm" asChild>
+              <Link href="/register">{homeTexts.navigation.auth.signup}</Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -85,10 +87,14 @@ const Header = () => {
                   </span>
                   <ModeToggle />
                 </div>
-                <Button variant="outline" size="sm">
-                  {homeTexts.navigation.auth.login}
+                <Button variant="outline" size="sm" asChild>
+                  <Link href="/login">{homeTexts.navigation.auth.login}</Link>
                 </Button>
-                <Button size="sm">{homeTexts.navigation.auth.signup}</Button>
+                <Button size="sm" asChild>
+                  <Link href="/register">
+                    {homeTexts.navigation.auth.signup}
+                  </Link>
+                </Button>
               </div>
             </nav>
           </div>

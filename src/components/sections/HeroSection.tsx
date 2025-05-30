@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { ArrowLeft, Users, TrendingUp, Shield } from "lucide-react";
 import { homeTexts } from "@/constants/home-texts";
 
@@ -33,12 +34,19 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-lg px-8">
-                {hero.ctaPrimary}
-                <ArrowLeft className="mr-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link href="/register">
+                  {hero.ctaPrimary}
+                  <ArrowLeft className="mr-2 h-5 w-5" />
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8">
-                {hero.ctaSecondary}
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-lg px-8"
+                asChild
+              >
+                <Link href="/about">{hero.ctaSecondary}</Link>
               </Button>
             </div>
 

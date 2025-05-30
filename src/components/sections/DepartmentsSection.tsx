@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Building2,
   Scale,
@@ -111,10 +112,10 @@ const DepartmentsSection = () => {
                     className="w-full justify-between group-hover:bg-primary/10 transition-colors"
                     asChild
                   >
-                    <a href={dept.href}>
+                    <Link href="/departments">
                       {departments.cta}
                       <ArrowLeft className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -133,11 +134,20 @@ const DepartmentsSection = () => {
                 {departments.bottomCta.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="text-lg px-8">
-                  {departments.bottomCta.primaryButton}
+                <Button size="lg" className="text-lg px-8" asChild>
+                  <Link href="/register">
+                    {departments.bottomCta.primaryButton}
+                  </Link>
                 </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8">
-                  {departments.bottomCta.secondaryButton}
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-lg px-8"
+                  asChild
+                >
+                  <Link href="/contact">
+                    {departments.bottomCta.secondaryButton}
+                  </Link>
                 </Button>
               </div>
             </div>

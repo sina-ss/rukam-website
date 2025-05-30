@@ -192,8 +192,8 @@ export const homeTexts = {
     logo: "رکام",
     menu: [
       { label: "صفحه اصلی", href: "/" },
-      { label: "درباره ما", href: "/about" },
       { label: "دپارتمان‌ها", href: "/departments" },
+      { label: "درباره ما", href: "/about" },
       { label: "تماس با ما", href: "/contact" },
     ],
     auth: {
