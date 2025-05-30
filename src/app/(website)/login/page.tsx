@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -15,7 +15,9 @@ import { toast } from "sonner";
 
 const LoginPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const {
     register,
@@ -30,6 +32,27 @@ const LoginPage = () => {
     },
   });
 
+  // Check if already authenticated on mount
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const isAuthenticated = authService.isAuthenticated();
+        if (isAuthenticated) {
+          // Get redirect URL from query params or default to admin
+          const redirectTo = searchParams.get("redirect") || "/admin";
+          router.push(redirectTo);
+          return;
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, [router, searchParams]);
+
   const onSubmit = async (data: LoginFormData) => {
     try {
       const apiData: LoginData = {
@@ -41,17 +64,17 @@ const LoginPage = () => {
 
       if (response.success) {
         toast.success("ورود موفقیت‌آمیز!", {
-          description: "به پنل کاربری خود خوش آمدید.",
-          duration: 3000,
+          description: "به پنل مدیریت خوش آمدید.",
+          duration: 2000,
         });
         reset();
-        // Redirect to admin dashboard after successful login
-        setTimeout(() => {
-          router.push("/admin");
-        }, 1500);
+
+        // Get redirect URL from query params or default to admin
+        const redirectTo = searchParams.get("redirect") || "/admin";
+        router.push(redirectTo);
       } else {
         toast.error("خطا در ورود", {
-          description: response.message || "لطفاً دوباره تلاش کنید.",
+          description: response.message || "ایمیل یا رمز عبور اشتباه است.",
           duration: 4000,
         });
       }
@@ -63,6 +86,18 @@ const LoginPage = () => {
       });
     }
   };
+
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">در حال بررسی احراز هویت...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

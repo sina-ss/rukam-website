@@ -1,43 +1,43 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import AdminSidebar from "@/components/admin/layout/AdminSidebar";
+import AdminHeader from "@/components/admin/layout/AdminHeader";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "رکام - نگاه نو، اقتصاد نو",
-  description:
-    "رکام طرح بین‌المللی خرید و فروش بدون وجه نقد را در کنار شما ایجاد کردیم که در قالب ۱۲ فاز، اجرایی خواهد شد.",
-  keywords: "رکام, اقتصاد نو, خرید و فروش بدون وجه نقد, بازرگانی, آموزش",
-  authors: [{ name: "رکام" }],
-  creator: "رکام",
-  publisher: "رکام",
-  robots: "index, follow",
-  openGraph: {
-    title: "رکام - نگاه نو، اقتصاد نو",
-    description:
-      "رکام طرح بین‌المللی خرید و فروش بدون وجه نقد را در کنار شما ایجاد کردیم",
-    type: "website",
-    locale: "fa_IR",
-  },
+  title: "پنل مدیریت - رکام",
+  description: "پنل مدیریت سایت رکام برای مدیریت فرم‌ها و کاربران",
+  robots: "noindex, nofollow",
 };
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="fa" dir="rtl" suppressHydrationWarning>
-      <body className="antialiased min-h-screen flex flex-col">
+      <body className="antialiased min-h-screen bg-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <main className="flex-1">{children}</main>
+          <div className="flex h-screen">
+            {/* Sidebar */}
+            <AdminSidebar />
+
+            {/* Main Content */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+              {/* Header */}
+              <AdminHeader />
+
+              {/* Page Content */}
+              <main className="flex-1 overflow-y-auto p-6">{children}</main>
+            </div>
+          </div>
           <Toaster />
         </ThemeProvider>
       </body>

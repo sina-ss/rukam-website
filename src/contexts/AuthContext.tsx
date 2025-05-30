@@ -30,9 +30,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const checkAuth = () => {
-    const token = authService.getToken();
-    setIsAuthenticated(!!token);
-    setIsLoading(false);
+    try {
+      const isAuth = authService.isAuthenticated();
+      setIsAuthenticated(isAuth);
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      setIsAuthenticated(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -56,7 +62,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-  }, []);
+
+    // Set up periodic token validation (every 5 minutes)
+    const interval = setInterval(() => {
+      const isAuth = authService.isAuthenticated();
+      if (isAuth !== isAuthenticated) {
+        setIsAuthenticated(isAuth);
+      }
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
 
   const value: AuthContextType = {
     isAuthenticated,
