@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,7 +18,8 @@ import {
 } from "lucide-react";
 import { departmentsTexts } from "@/constants/departments-texts";
 
-const DepartmentsPage = () => {
+const DepartmentsContent = () => {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("overview");
   const [formData, setFormData] = useState({
     department: "",
@@ -27,6 +29,19 @@ const DepartmentsPage = () => {
     mobile: "",
     website: "",
   });
+
+  // Handle URL parameters for tab navigation
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab) {
+      // Map "membership" to "form" for the membership form
+      if (tab === "membership") {
+        setActiveTab("form");
+      } else {
+        setActiveTab(tab);
+      }
+    }
+  }, [searchParams]);
 
   const departments = [
     { ...departmentsTexts.business, icon: Building2 },
@@ -675,6 +690,14 @@ const DepartmentsPage = () => {
         </div>
       </section>
     </div>
+  );
+};
+
+const DepartmentsPage = () => {
+  return (
+    <Suspense fallback={<div>درحال بارگذاری...</div>}>
+      <DepartmentsContent />
+    </Suspense>
   );
 };
 

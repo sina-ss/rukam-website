@@ -215,16 +215,18 @@ export const homeTexts = {
         { label: "درباره ما", href: "/about" },
         { label: "دپارتمان‌ها", href: "/departments" },
         { label: "تماس با ما", href: "/contact" },
-        { label: "عضویت", href: "/membership" },
+        { label: "عضویت", href: "/departments?tab=membership" },
       ],
     },
     departments: {
       title: "دپارتمان‌ها",
       items: [
-        { label: "بازرگانی رکام", href: "/departments/business" },
-        { label: "حقوقی رکام", href: "/departments/legal" },
-        { label: "آموزش رکام", href: "/departments/education" },
-        { label: "بهداشت و سلامت", href: "/departments/health" },
+        { label: "بازرگانی رکام", href: "/departments?tab=business" },
+        { label: "حقوقی رکام", href: "/departments?tab=legal" },
+        { label: "آموزش رکام", href: "/departments?tab=education" },
+        { label: "بهداشت و سلامت", href: "/departments?tab=health" },
+        { label: "فرهنگی و هنری", href: "/departments?tab=cultural" },
+        { label: "فناوری اطلاعات", href: "/departments?tab=it" },
       ],
     },
     contact: {
