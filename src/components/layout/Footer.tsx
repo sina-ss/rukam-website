@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { homeTexts } from "@/constants/home-texts";
 
 const Footer = () => {
   return (
@@ -11,104 +12,61 @@ const Footer = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
                 ر
               </div>
-              <span className="text-xl font-bold text-foreground">رکام</span>
+              <span className="text-xl font-bold text-foreground">
+                {homeTexts.footer.company.name}
+              </span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              رکام با شعار «نگاه نو، اقتصاد نو» طرح بین‌المللی خرید و فروش بدون
-              وجه نقد را در کنار شما ایجاد کردیم.
+              {homeTexts.footer.company.description}
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground">
-              دسترسی سریع
+              {homeTexts.footer.quickLinks.title}
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  صفحه اصلی
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  درباره ما
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  تماس با ما
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/membership"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  عضویت
-                </Link>
-              </li>
+              {homeTexts.footer.quickLinks.items.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Departments */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground">
-              دپارتمان‌ها
+              {homeTexts.footer.departments.title}
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/departments/business"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  بازرگانی رکام
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/departments/legal"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  حقوقی رکام
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/departments/education"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  آموزش رکام
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/departments/health"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  بهداشت و سلامت
-                </Link>
-              </li>
+              {homeTexts.footer.departments.items.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground">
-              تماس با ما
+              {homeTexts.footer.contact.title}
             </h3>
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
-                برای ارتباط کافیست شماره ارتباطی خود را برای ما ارسال کنید.
+                {homeTexts.footer.contact.description}
               </p>
             </div>
           </div>
@@ -118,9 +76,7 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t">
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
             <p className="text-sm text-destructive font-medium">
-              ⚠️ توجه مهم: رکام هیچ‌گونه کارگزار و نماینده‌ای خارج از این سایت
-              ندارد. چنانچه شخص یا اشخاصی خود را نماینده یا کارگزار رکام معرفی
-              نمودند، حتماً اطلاع دهید.
+              {homeTexts.footer.warning}
             </p>
           </div>
         </div>
@@ -128,7 +84,8 @@ const Footer = () => {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} رکام. کلیه‌ی حقوق محفوظ است.
+            © {new Date().getFullYear()} {homeTexts.footer.company.name}.{" "}
+            {homeTexts.footer.copyright}
           </p>
         </div>
       </div>
