@@ -5,22 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Toaster } from "@/components/ui/sonner";
 import { Phone, Mail, MapPin, Send, Loader2 } from "lucide-react";
 import { homeTexts } from "@/constants/home-texts";
 import {
   contactFormSchema,
-  departmentOptions,
   type ContactFormData,
-} from "@/schemas/contact";
-import { contactService, type DepartmentFormData } from "@/services/contact";
+} from "@/schemas/contact-form";
+import {
+  contactFormService,
+  type ContactFormData as ApiContactFormData,
+} from "@/services/contact-form";
 import { toast } from "sonner";
 
 const ContactSection = () => {
@@ -29,8 +24,6 @@ const ContactSection = () => {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({
@@ -39,8 +32,6 @@ const ContactSection = () => {
       name: "",
       phone: "",
       email: "",
-      website: "",
-      department: "",
       message: "",
     },
   });
@@ -48,16 +39,14 @@ const ContactSection = () => {
   const onSubmit = async (data: ContactFormData) => {
     try {
       // Transform form data to match API requirements
-      const apiData: DepartmentFormData = {
+      const apiData: ApiContactFormData = {
         full_name: data.name,
         phone_number: data.phone,
         email: data.email || "",
-        website: data.website || "",
-        department: data.department,
         content: data.message,
       };
 
-      const response = await contactService.submitDepartmentForm(apiData);
+      const response = await contactFormService.submitContactForm(apiData);
 
       if (response.success) {
         toast.success("درخواست شما با موفقیت ارسال شد!", {
@@ -257,64 +246,6 @@ const ContactSection = () => {
                     {errors.email && (
                       <p className="text-red-500 text-sm mt-1">
                         {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Website Field */}
-                  <div>
-                    <label
-                      htmlFor="website"
-                      className="block text-sm font-medium text-foreground mb-2"
-                    >
-                      وب‌سایت (اختیاری)
-                    </label>
-                    <Input
-                      id="website"
-                      type="url"
-                      {...register("website")}
-                      placeholder="https://example.com"
-                      className={`w-full ${
-                        errors.website ? "border-red-500" : ""
-                      }`}
-                    />
-                    {errors.website && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.website.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Department Field */}
-                  <div>
-                    <label
-                      htmlFor="department"
-                      className="block text-sm font-medium text-foreground mb-2"
-                    >
-                      دپارتمان مورد علاقه *
-                    </label>
-                    <Select
-                      onValueChange={(value) => setValue("department", value)}
-                      value={watch("department")}
-                    >
-                      <SelectTrigger
-                        className={`w-full ${
-                          errors.department ? "border-red-500" : ""
-                        }`}
-                      >
-                        <SelectValue placeholder="دپارتمان خود را انتخاب کنید" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {departmentOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.department && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.department.message}
                       </p>
                     )}
                   </div>

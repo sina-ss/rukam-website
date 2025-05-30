@@ -1,16 +1,40 @@
 # API Integration Documentation
 
-## Contact Form Integration
+## Contact Form Integration (Home Page)
 
-The contact form in `ContactSection.tsx` has been integrated with the backend API to handle form submissions.
+The contact form in `ContactForm.tsx` has been integrated with the backend API to handle general contact submissions.
+
+## Contact Section Form Integration (Contact Page)
+
+The contact section form in `ContactSection.tsx` has been integrated with the same backend API endpoint for general contact requests.
+
+## Membership Form Integration
+
+The membership form in `MembershipForm.tsx` has been integrated with the backend API for department membership requests.
 
 ### API Configuration
 
 - **Base URL**: `http://localhost:8090`
-- **Endpoint**: `/department_form`
-- **Method**: `POST`
 
-### API Request Format
+### API Endpoints
+
+1. **Contact Forms (Home Page & Contact Page)**: `/form` (POST)
+2. **Membership Form**: `/department_form` (POST)
+
+### API Request Formats
+
+#### Contact Forms (Home Page & Contact Page) - `/form`
+
+```json
+{
+  "content": "خوشحال میشوم با همدیگر همکاری داشته باشیم",
+  "full_name": "رضا احمدپور",
+  "phone_number": "09339876543",
+  "email": "reza.ahmadpour@example.com"
+}
+```
+
+#### Membership Form - `/department_form`
 
 ```json
 {
@@ -23,16 +47,25 @@ The contact form in `ContactSection.tsx` has been integrated with the backend AP
 }
 ```
 
-### Form Fields
+### Form Fields Comparison
+
+#### Contact Forms (Home Page & Contact Page)
 
 1. **Name** (`full_name`): Required, 2-50 characters, Persian/English letters only
 2. **Phone** (`phone_number`): Required, 11 digits, must start with 09
 3. **Email** (`email`): Optional, valid email format
+4. **Message** (`content`): Required, 10-1000 characters
+
+#### Membership Form
+
+1. **Name** (`full_name`): Required, 2-50 characters, Persian/English letters only
+2. **Mobile** (`phone_number`): Required, 11 digits, must start with 09
+3. **Email** (`email`): Optional, valid email format
 4. **Website** (`website`): Optional, valid URL format
 5. **Department** (`department`): Required, must be one of the available departments
-6. **Message** (`content`): Required, 10-1000 characters
+6. **Opinion** (`content`): Required, 20-2000 characters (longer than other forms)
 
-### Available Departments
+### Available Departments (for Membership Form only)
 
 - بازرگانی رکام
 - حقوقی رکام
@@ -45,27 +78,42 @@ The contact form in `ContactSection.tsx` has been integrated with the backend AP
 
 Form validation is handled using **Zod v3** with the following rules:
 
+#### Contact Forms (`src/schemas/contact-form.ts`)
+
 - **Name**: Persian/English characters, 2-50 length
 - **Phone**: Iranian mobile format (09XXXXXXXXX)
 - **Email**: Valid email format (optional)
+- **Message**: 10-1000 characters
+
+#### Membership Form (`src/schemas/membership.ts`)
+
+- **Name**: Persian/English characters, 2-50 length
+- **Mobile**: Iranian mobile format (09XXXXXXXXX)
+- **Email**: Valid email format (optional)
 - **Website**: Valid URL format (optional)
 - **Department**: Must be selected from available options
-- **Message**: 10-1000 characters
+- **Opinion**: 20-2000 characters (longer requirement for membership applications)
 
 ### Error Handling
 
 - Network errors are caught and displayed to the user
 - Validation errors are shown inline with each field
 - Success/error messages are displayed using Sonner toast notifications
-- Form is reset after successful submission
+- Forms are reset after successful submission
 
 ### Files Modified
 
 1. `src/lib/api.ts` - Axios configuration
-2. `src/services/contact.ts` - Contact service with API calls
-3. `src/schemas/contact.ts` - Zod validation schema
-4. `src/components/sections/ContactSection.tsx` - Updated form component
-5. `src/lib/utils.ts` - Utility functions for error handling
+2. `src/services/contact.ts` - Contact service for department forms (Membership only)
+3. `src/services/contact-form.ts` - Contact service for general contact forms (Home Page & Contact Page)
+4. `src/schemas/contact.ts` - Zod validation schema for department-specific forms (deprecated for contact section)
+5. `src/schemas/contact-form.ts` - Zod validation schema for contact forms (Home Page & Contact Page)
+6. `src/schemas/membership.ts` - Zod validation schema for membership form
+7. `src/components/contact/ContactForm.tsx` - Updated contact form component (Home Page)
+8. `src/components/sections/ContactSection.tsx` - Updated contact section form component (Contact Page)
+9. `src/components/departments/MembershipForm.tsx` - Updated membership form component
+10. `src/app/(website)/departments/page.tsx` - Updated to use new form component
+11. `src/lib/utils.ts` - Utility functions for error handling
 
 ### Dependencies Added
 
@@ -77,7 +125,7 @@ Form validation is handled using **Zod v3** with the following rules:
 
 ### Usage
 
-The form automatically handles:
+All forms automatically handle:
 
 - Real-time validation
 - API submission
@@ -86,4 +134,12 @@ The form automatically handles:
 - Success notifications with Sonner toasts
 - Form reset after submission
 
-Users can fill out the form, select their preferred department, and submit their contact request. The system will validate the data and send it to the backend API.
+#### Contact Forms (Home Page & Contact Page)
+
+Simple contact forms for general inquiries without department selection. Both use the same `/form` endpoint.
+
+#### Membership Form
+
+Detailed membership application form with opinion field and department selection for joining specific departments. Uses the `/department_form` endpoint.
+
+Each form validates the data and sends it to the appropriate backend API endpoint.

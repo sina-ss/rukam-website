@@ -22,14 +22,6 @@ import {
 const DepartmentsContent = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("overview");
-  const [formData, setFormData] = useState({
-    department: "",
-    opinion: "",
-    name: "",
-    email: "",
-    mobile: "",
-    website: "",
-  });
 
   // Handle URL parameters for tab navigation
   useEffect(() => {
@@ -52,30 +44,6 @@ const DepartmentsContent = () => {
     { ...departmentsTexts.cultural, icon: Palette },
     { ...departmentsTexts.it, icon: Monitor },
   ];
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    setFormData({
-      department: "",
-      opinion: "",
-      name: "",
-      email: "",
-      mobile: "",
-      website: "",
-    });
-  };
-
-  const handleFormChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,14 +77,7 @@ const DepartmentsContent = () => {
           )}
 
           {/* Membership Form Tab */}
-          {activeTab === "form" && (
-            <MembershipForm
-              formData={formData}
-              handleFormSubmit={handleFormSubmit}
-              handleFormChange={handleFormChange}
-              departments={departments}
-            />
-          )}
+          {activeTab === "form" && <MembershipForm departments={departments} />}
         </div>
       </section>
     </div>
